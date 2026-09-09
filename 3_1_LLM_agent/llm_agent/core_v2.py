@@ -1,5 +1,3 @@
-# llm_agent/core.py
-
 import requests
 import json
 from typing import List, Dict, Optional
@@ -9,6 +7,7 @@ from .tool_calculator import CalculatorTool
 from .tool_websearch import WebSearchTool
 from .tool_pdfinfo import PDFInfoTool
 from .tool_yamlconfig import YAMLConfigTool
+
 
 class LLMAgent:
     """
@@ -93,7 +92,14 @@ class LLMAgent:
         - **pdf_info**: For extracting information from PDF files (metadata, page count, text content). Use it with a local file path or a URL to a PDF file.
         - **yaml_config**: For working with YAML configuration files. Supports reading YAML from file, writing data to YAML file, validating YAML data against Cerberus schema, and parsing YAML strings. Actions: read, write, validate, parse.
         Your response MUST be ONLY a JSON object of the following format.
-        ...
+        If one or more tools are needed to answer, return JSON of this structure:
+        {{
+        "plan": [
+            {{"action": "tool_name", "input": "some text to pass into tool"}},
+            ... //MORE ACTIONS IF NEEDED SEVERAL TOOLS. ONE ACTION FOR ONE TOOL CALL
+        ]
+        }}
+        If no tool is needed, return an empty plan: {{"plan": []}}.
         """
 
         # Формируем запрос к API
@@ -108,7 +114,6 @@ class LLMAgent:
         try:
             # Для Ollama может потребоваться дополнительная настройка
             if self.local:
-                # Некоторые модели Ollama могут требовать параметр stream=False
                 payload["stream"] = False
             
             response_data = self._make_api_request(payload)
