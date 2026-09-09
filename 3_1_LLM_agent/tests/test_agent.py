@@ -7,7 +7,7 @@ from llm_agent.core_v2 import LLMAgent
 # ИНТЕГРАЦИОННЫЕ ТЕСТЫ (Запускают реальную Ollama / API)
 # =====================================================================
 # Маркируем как 'integration', чтобы их можно было отключать при быстрой проверке
-
+@pytest.mark.legacy
 @pytest.mark.integration
 def test_calculator_query_live():
     """Реальный запуск агента для проверки математики."""
@@ -20,7 +20,7 @@ def test_calculator_query_live():
     # Проверяем, что агент смог посчитать и выдать 16
     assert "16" in response
 
-
+@pytest.mark.legacy
 @pytest.mark.integration
 def test_football_query_live():
     """Реальный запуск агента для проверки поиска DuckDuckGo."""
@@ -35,6 +35,7 @@ def test_football_query_live():
 # =====================================================================
 # ТЕСТЫ ДЛЯ YAML_CONFIG TOOL
 # =====================================================================
+@pytest.mark.yaml
 @pytest.mark.integration
 def test_yamlconfig_from_agent():
     """Тест, что агент распознает необходимость использования YAML инструмента."""
@@ -58,7 +59,7 @@ def test_yamlconfig_from_agent():
     else:
         # Если план пустой - это тоже допустимо для некоторых запросов
         assert True
-        
+@pytest.mark.yaml        
 def test_yamlconfig_tool_read():
     """Тест чтения YAML-файла."""
     from llm_agent.tool_yamlconfig import YAMLConfigTool
@@ -95,7 +96,7 @@ database:
         if os.path.exists(yaml_path):
             os.unlink(yaml_path)
 
-
+@pytest.mark.yaml
 def test_yamlconfig_tool_write():
     """Тест записи YAML-файла."""
     from llm_agent.tool_yamlconfig import YAMLConfigTool
@@ -135,7 +136,7 @@ def test_yamlconfig_tool_write():
         if os.path.exists(yaml_path):
             os.unlink(yaml_path)
 
-
+@pytest.mark.yaml
 def test_yamlconfig_tool_validate():
     """Тест валидации данных по схеме Cerberus."""
     from llm_agent.tool_yamlconfig import YAMLConfigTool
@@ -181,7 +182,7 @@ def test_yamlconfig_tool_validate():
     assert "✅" in result or "успешна" in result
     assert "данные соответствуют схеме" in result.lower() or "соответствуют" in result
 
-
+@pytest.mark.yaml
 def test_yamlconfig_tool_validate_error():
     """Тест валидации с ошибками."""
     from llm_agent.tool_yamlconfig import YAMLConfigTool
@@ -220,7 +221,7 @@ def test_yamlconfig_tool_validate_error():
     assert "ошибка" in result.lower() or "error" in result.lower()
     # Проверяем, что результат содержит информацию об ошибках
     assert len(result) > 0
-
+@pytest.mark.yaml
 def test_yamlconfig_tool_parse():
     """Тест парсинга YAML-строки."""
     from llm_agent.tool_yamlconfig import YAMLConfigTool
@@ -251,7 +252,7 @@ settings:
     assert "timeout" in result
     assert "retry_count" in result
 
-
+@pytest.mark.yaml
 # Вспомогательная функция для объединения всех тестов
 def run_all_yaml_tests():
     """Запускает все тесты для YAMLConfigTool (для удобства)."""
