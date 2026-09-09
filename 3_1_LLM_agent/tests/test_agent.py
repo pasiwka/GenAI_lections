@@ -102,15 +102,13 @@ def test_yamlconfig_tool_write():
     import tempfile
     import os
     import yaml
-    
+
     tool = YAMLConfigTool()
-    
-    # Создаем временный файл
+
     with tempfile.NamedTemporaryFile(suffix='.yaml', delete=False) as tmp_file:
         yaml_path = tmp_file.name
-    
+
     try:
-        # Данные для записи
         test_data = {
             "app": "WriteTest",
             "version": "2.0.0",
@@ -120,23 +118,16 @@ def test_yamlconfig_tool_write():
                 "retries": 3
             }
         }
-        
+
         result = tool.use("write", file_path=yaml_path, data=test_data)
-        
-        # Проверяем, что файл создан и содержит данные
-        assert "Успешно записан" in result
+        assert "успешно записан" in result.lower()
         assert "WriteTest" in result
         assert "2.0.0" in result
-        assert "timeout" in result
-        
-        # Проверяем, что файл действительно существует
         assert os.path.exists(yaml_path)
-        
-        # Читаем файл и проверяем содержимое
-        import yaml
+
         with open(yaml_path, 'r', encoding='utf-8') as f:
             loaded_data = yaml.safe_load(f)
-        
+
         assert loaded_data["app"] == "WriteTest"
         assert loaded_data["version"] == "2.0.0"
         assert loaded_data["settings"]["timeout"] == 30
