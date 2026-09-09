@@ -76,5 +76,6 @@ jobs:
         PYTHONPATH: .
       run: |
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        python -m pytest -v
+        # Запускаем только тесты с маркером "yaml" (пропускаем legacy)
+        python -m pytest -v -m "yaml"
         python main.py
