@@ -23,7 +23,7 @@ def test_calculator_query_live():
 @pytest.mark.integration
 def test_football_query_live():
     """Реальный запуск агента для проверки поиска DuckDuckGo."""
-    agent = LLMAgent(local=True, ollama_model="qwen3.5:0.8b")
+    agent = LLMAgent(local=True, ollama_model="llama3.2:3b")
     query = "Кто выиграл последний матч Спартак-Динамо?"
     
     response = agent.process_query(query)
@@ -38,7 +38,7 @@ def test_football_query_live():
 @pytest.mark.integration
 def test_yamlconfig_from_agent():
     """Тест, что агент распознает необходимость использования YAML инструмента."""
-    agent = LLMAgent(local=True, ollama_model="qwen3.5:0.8b")
+    agent = LLMAgent(local=True, ollama_model="llama3.2:3b")
     
     query = "Прочитай и покажи содержимое YAML файла config.yaml"
     
