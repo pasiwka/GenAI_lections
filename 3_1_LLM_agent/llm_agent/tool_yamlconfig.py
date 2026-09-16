@@ -166,7 +166,7 @@ class YAMLConfigTool:
             
             if is_valid:
                 result = (
-                    f"✅ Валидация успешна!\n"
+                    f" Валидация успешна!\n"
                     f"{'=' * 50}\n"
                     f"Данные соответствуют схеме.\n"
                     f"Размер данных: {len(data)} полей"
@@ -182,7 +182,7 @@ class YAMLConfigTool:
                         error_lines.append(f"  - {field}: {field_errors}")
                 
                 result = (
-                    f"❌ Ошибка валидации!\n"
+                    f" Ошибка валидации!\n"
                     f"{'=' * 50}\n"
                     f"Найдены ошибки в данных:\n"
                     f"{chr(10).join(error_lines)}"
@@ -209,7 +209,6 @@ class YAMLConfigTool:
             if data is None:
                 return "Строка пуста или содержит только комментарии."
             
-            # Форматируем результат
             pretty_data = json.dumps(data, ensure_ascii=False, indent=2)
             
             result = (
