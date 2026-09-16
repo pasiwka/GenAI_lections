@@ -11,8 +11,7 @@ from llm_agent.core_v2 import LLMAgent
 @pytest.mark.integration
 def test_calculator_query_live():
     """Реальный запуск агента для проверки математики."""
-    # Для тестов лучше использовать локальную модель, если она поднята
-    agent = LLMAgent(local=True, ollama_model="qwen3.5:0.8b")
+    agent = LLMAgent(local=True, ollama_model="llama3.2:3b")
     query = "Сколько будет (5 + 3) * 2? Напиши только цифру."
     
     response = agent.process_query(query)
