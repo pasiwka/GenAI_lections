@@ -35,8 +35,7 @@ database:
         yaml_path = tmp_file.name
 
     try:
-        # Запрос, который должен вызвать yaml_config
-        query = f"Прочитай YAML-файл {yaml_path} и покажи его содержимое"
+        query = f"Используй инструмент yaml_config с действием read для файла {yaml_path}"
 
         print(f"Ваш запрос: {query}")
         print("-" * 70)
