@@ -208,8 +208,10 @@ class LLMAgent:
         # --- Шаг 2: Исполнение плана ---
         print(f"План действий: {plan}")
         for step in plan:
-            tool_name = step.get('action')
+            tool_name = step.get('action', '')
             tool_input = step.get('input')
+            if tool_name and '.' in tool_name:
+                tool_name = tool_name.split('.')[0]
 
             if tool_name in self.tools:
                 print(f"Выполняется инструмент: '{tool_name}'")
