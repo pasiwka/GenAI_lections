@@ -27,38 +27,33 @@ class YAMLConfigTool:
         yaml_string: Optional[str] = None,
         **kwargs
     ) -> str:
-    """
-    Выполняет действие с YAML-конфигурацией.
+        """
+        Выполняет действие с YAML-конфигурацией.
+        ...
+        """
+        if action not in ("read", "write", "validate", "parse"):
+            if action and (action.endswith(".yaml") or action.endswith(".yml") or "/" in action or "\\" in action):
+                file_path = action
+                action = "read"
+            elif action and (":" in action or "\n" in action):
+                yaml_string = action
+                action = "parse"
+            else:
+                return f"Ошибка: неизвестное действие '{action}'. Доступные: read, write, validate, parse"
 
-    Поддерживает два режима:
-    1. Явный: use("read", file_path="config.yaml")
-    2. Неявный: use("config.yaml") — action определится автоматически
-    """
-    # Авто-определение action, если он не из списка
-    if action not in ("read", "write", "validate", "parse"):
-        if action and (action.endswith(".yaml") or action.endswith(".yml") or "/" in action or "\\" in action):
-            file_path = action
-            action = "read"
-        elif action and (":" in action or "\n" in action):
-            yaml_string = action
-            action = "parse"
-        else:
-            return f"Ошибка: неизвестное действие '{action}'. Доступные: read, write, validate, parse"
+        try:
+            if action == "read":
+                return self._read_yaml(file_path)
+            elif action == "write":
+                return self._write_yaml(file_path, data, **kwargs)
+            elif action == "validate":
+                return self._validate_yaml(data, schema)
+            elif action == "parse":
+                return self._parse_yaml_string(yaml_string)
 
-    try:
-        if action == "read":
-            return self._read_yaml(file_path)
-        elif action == "write":
-            return self._write_yaml(file_path, data, **kwargs)
-        elif action == "validate":
-            return self._validate_yaml(data, schema)
-        elif action == "parse":
-            return self._parse_yaml_string(yaml_string)
-
-    except Exception as e:
-        print(f"> Ошибка при работе с YAML: {e}")
-        return f"Произошла ошибка при выполнении действия '{action}': {e}"
-
+        except Exception as e:
+            print(f"> Ошибка при работе с YAML: {e}")
+            return f"Произошла ошибка при выполнении действия '{action}': {e}"
     def _read_yaml(self, file_path: str) -> str:
         """
         Читает YAML-файл и возвращает его содержимое в виде строки JSON.
